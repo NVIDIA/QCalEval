@@ -2,22 +2,24 @@
   description = "QCalEval — Vision-language model evaluation on quantum calibration plots";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    pyproject-nix.url = "github:pyproject-nix/pyproject.nix";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, pyproject-nix }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
         python = pkgs.python312;
 
-        pythonEnv = python.withPackages (ps: with ps; [
-          datasets
-          httpx
-          pillow
-          huggingface-hub
-        ]);
+        # Load/parse requirements.txt as the single source of truth for pins.
+        project = pyproject-nix.lib.project.loadRequirementsTxt { projectRoot = ./.; };
+
+        pythonEnv =
+          # Assert that nixpkgs versions match what's pinned in requirements.txt.
+          assert project.validators.validateVersionConstraints { inherit python; } == { };
+          python.withPackages (project.renderers.withPackages { inherit python; });
 
         mkBenchmark = name: scriptPath:
           pkgs.writeShellApplication {
