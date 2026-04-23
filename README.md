@@ -75,6 +75,13 @@ In ICL mode, the model receives labeled demonstration examples from the same exp
 pip install -r requirements.txt
 ```
 
+Or with Nix (flakes enabled):
+
+```bash
+nix develop                   # dev shell with all dependencies
+nix run .#zeroshot -- --help  # also: .#icl, .#judge
+```
+
 ## Scripts
 
 ### benchmark_zeroshot.py — Zero-shot evaluation
