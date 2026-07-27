@@ -5,11 +5,21 @@
 
 Evaluation scripts for the [QCalEval](https://huggingface.co/datasets/nvidia/QCalEval) benchmark — a dataset for assessing vision-language model capabilities on quantum calibration experiment analysis. Data is loaded directly from HuggingFace. Compatible with any OpenAI-compatible API endpoint.
 
-## Top 5 Models (Zero-Shot, April 2026)
+## QCalEval Leaderboard (July 2026)
 
-Based on the QCalEval benchmark findings, we release [NVIDIA Ising Calibration 1](https://huggingface.co/nvidia/ising-calibration-1-35b-a3b), an open-weight 35B MoE model fine-tuned for zero-shot quantum calibration plot understanding.
+The latest QCalEval results highlight NVIDIA Ising Calibration 1.5, an open 31B vision-language model evaluated in BF16 and NVFP4 precision. The previous-generation [NVIDIA Ising Calibration 1](https://huggingface.co/nvidia/ising-calibration-1-35b-a3b) result is included for comparison.
 
-![QCalEval Zero-Shot Leaderboard — Top 5 Models](leaderboard_top5.svg)
+![QCalEval zero-shot and MM-ICL leaderboards, with Ising Calibration 1.5 highlighted](qcaleval_leaderboard_2026_07.svg)
+
+Scores are the simple average of GPT-5.4 and Gemini-3.1-Pro judge results, with judging completed in July 2026. Zero-shot covers Q1–Q6; multimodal in-context learning (MM-ICL) covers Q3, Q5, and Q6.
+
+| Model | Precision | Zero-Shot Mean | MM-ICL Mean |
+|-------|-----------|---------------:|------------:|
+| **Ising Calibration 1.5 31B** | **BF16** | **75.7** | **83.0** |
+| **Ising Calibration 1.5 31B** | **NVFP4** | **70.5** | **81.2** |
+| Ising Calibration 1 35B | BF16 | 74.7 | 44.5 |
+
+## Benchmark Tasks
 
 | Label | Question | Task |
 |-------|----------|------|
@@ -19,6 +29,9 @@ Based on the QCalEval benchmark findings, we release [NVIDIA Ising Calibration 1
 | Fit Rel. | Q4 | Assess whether a visible fit is trustworthy for downstream use: reliable, unreliable, or no fit |
 | Param. Ext. | Q5 | Extract family-specific physical parameters into structured JSON |
 | Cal. Diag. | Q6 | Assign a family-specific status code (e.g., SUCCESS, NO_SIGNAL) with corrective action |
+
+<details>
+<summary>Archived April 2026 leaderboard</summary>
 
 ## Zero-Shot Leaderboard (April 2026)
 
@@ -68,6 +81,8 @@ In ICL mode, the model receives labeled demonstration examples from the same exp
 | Open | Qwen3.5-9B | 43.2 | 32.8 | -6.7 | 63.0 | +5.9 | 33.9 | -18.4 |
 | Open | Kimi-VL-A3B | 40.6 | 34.9 | +12.8 | 54.3 | +15.4 | 32.6 | -4.8 |
 | Open | MiniCPM-o-4.5 | 33.0 | 19.3 | -10.5 | 50.5 | +2.6 | 29.2 | -18.9 |
+
+</details>
 
 ## Setup
 
